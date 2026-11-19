@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b0d10">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https://wxzhxmtnlzyckgepmegc.supabase.co; base-uri 'none'; form-action 'none'">
+<title>Hacky remote</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="stylesheet" href="remote.css">
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <button id="back" class="icon-btn" aria-label="Back to chats" hidden>&#8592;</button>
+    <img class="logo" src="assets/logo.svg" alt="" id="logo">
+    <h1 id="title">Hacky remote</h1>
+    <button id="out" class="icon-btn" aria-label="Log out" hidden>&#x23FB;</button>
+  </header>
+
+  <main class="page">
+    <form id="login" class="signin" autocomplete="on">
+      <h2>Your agents, in your pocket</h2>
+      <p>Log in with your Hacky account. Then turn on <b>Let me control chats from my phone</b> in the Hacky app's tray menu.</p>
+      <label class="field">Email<input id="email" type="email" inputmode="email" autocomplete="username" autocapitalize="none" required></label>
+      <label class="field">Password<input id="pass" type="password" autocomplete="current-password" required></label>
+      <p id="loginErr" class="error" role="alert"></p>
+      <button class="primary" type="submit" id="loginBtn">Log in</button>
+    </form>
+
+    <section id="list" hidden>
+      <p id="offline" class="notice warn" role="status" hidden>Your computer isn't answering. Is Hacky open, with remote control switched on?</p>
+      <div id="chats"></div>
+      <div id="none" class="empty" hidden><b>No open chats</b>Start a chat in the Hacky app and it shows up here.</div>
+    </section>
+
+    <section id="chat" hidden>
+      <div id="events" class="thread" aria-live="polite"></div>
+      <div id="asking" class="ask" hidden role="group" aria-label="The agent is asking">
+        <b>Needs your answer</b>
+        <div id="askText" class="what"></div>
+        <div class="choices"><button id="no" class="no" type="button">No</button><button id="yes" class="yes" type="button">Yes, allow</button></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="foot" hidden>
+    <p id="sendErr" class="hint error" role="alert"></p>
+    <form id="send" class="composer">
+      <button type="button" id="stop" class="stop" aria-label="Stop the agent" hidden>&#9632;</button>
+      <textarea id="text" rows="1" placeholder="Message the agent" aria-label="Message" enterkeyhint="send"></textarea>
+      <button type="submit" id="sendBtn" class="send" aria-label="Send">&#8593;</button>
+    </form>
+  </div>
+</div>
+<script src="remote-config.js"></script>
+<script src="remote.js"></script>
+</body>
+</html>

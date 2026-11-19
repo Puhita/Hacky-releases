@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hacky: a shared brain for your team's AI coding agents</title>
+<meta name="description" content="Hacky is a VS Code extension, Windows app and MCP server that gives every teammate's Claude Code agent one shared memory, task board, sprints and question queue. Ask once, answer once, every agent knows.">
+<meta property="og:title" content="Hacky: a shared brain for your team's AI coding agents">
+<meta property="og:description" content="Ask once. Answer once. Every agent knows.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0b0d10">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="stylesheet" href="vendor/bootstrap.min.css">
+<link rel="stylesheet" href="styles.css">
+<script>(function(){var d=document.documentElement,t=null;d.classList.add("js");try{t=localStorage.getItem("hacky-theme");}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.dataset.theme=t;d.dataset.bsTheme=t;})();</script>
+</head>
+<body>
+<a class="skip" href="#how">Skip to content</a>
+
+<!-- NAV + HERO -->
+<header class="hero" id="top">
+  <svg class="hexbg" viewBox="0 0 620 620" aria-hidden="true">
+    <g fill="none" stroke="var(--brand)" stroke-width="1.2" stroke-opacity=".3">
+      <path d="M310 40l78 45v90l-78 45-78-45V85z"/><path d="M388 175l78 45v90l-78 45-78-45v-90z"/><path d="M232 175l78 45v90l-78 45-78-45v-90z"/>
+      <path d="M466 310l78 45v90l-78 45-78-45v-90z"/><path d="M310 310l78 45v90l-78 45-78-45v-90z"/><path d="M154 310l78 45v90l-78 45-78-45v-90z"/><path d="M388 445l78 45v90l-78 45-78-45v-90z"/>
+    </g>
+  </svg>
+  <div class="container position-relative">
+    <nav class="navbar navbar-expand-md py-3" aria-label="Main">
+      <a class="brand navbar-brand p-0 me-md-4" href="#top"><img src="assets/logo.svg" alt="" width="32" height="32">Hacky</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-menu" aria-controls="nav-menu" aria-expanded="false" aria-label="Open the menu"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="nav-menu">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0 gap-md-2">
+          <li class="nav-item"><a class="nav-link" href="#how">How it works</a></li>
+          <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="#map">Map</a></li>
+          <li class="nav-item"><a class="nav-link" href="#tour">Tour</a></li>
+          <li class="nav-item"><a class="nav-link" href="#agents">Agents</a></li>
+          <li class="nav-item"><a class="nav-link" href="#install">Set up</a></li>
+          <li class="nav-item"><a class="nav-link" href="#download">Download</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2 pb-2 pb-md-0">
+          <button class="theme" id="theme" type="button" aria-label="Switch between light and dark" title="Switch between light and dark">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/></svg>
+          </button>
+          <a class="btn btn-brand btn-sm-cta" href="#install">Get started</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="row align-items-center g-5 hero-in">
+      <div class="col-lg-6 hero-l">
+        <div class="eyebrow">For teams that code with AI agents</div>
+        <h1 class="h1">Ask once. Answer once. <em>Every agent knows.</em></h1>
+        <p class="lead">Hacky is a shared brain for your team’s Claude Code agents. When an agent is blocked on a human decision, you answer one time and the answer reaches every agent that needs it.</p>
+        <div class="cta">
+          <a class="btn btn-brand" href="#install"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v7.5M4.8 7.2L8 10.4l3.2-3.2M3 13h10"/></svg>Set up Hacky</a>
+          <a class="btn btn-ghost" href="#how">See how it works</a>
+        </div>
+        <p class="note">Built for teams where many people work on the same project.</p>
+      </div>
+      <div class="col-lg-6 hero-r">
+        <div class="chips d-none d-sm-flex" aria-hidden="true">
+          <div class="chip"><span class="hx needs"><b>3</b></span><b>need you</b></div>
+          <div class="chip"><span class="hx work"><b>3</b></span><b>working</b></div>
+          <div class="chip"><span class="hx wait"><b>3</b></span><b>waiting</b></div>
+        </div>
+        <div class="win hero-win">
+          <div class="win-bar"><i></i><i></i><i></i><span>Hacky · Sidebar</span></div>
+          <div class="ui" role="img" aria-label="The Hacky sidebar showing a question that three agents are waiting on">
+            <div class="ui-hd">
+              <img src="assets/logo.svg" alt="">
+              <div class="t"><b class="tr">hacky-shop</b><small>4 members</small></div>
+              <div class="ui-ic" aria-hidden="true">
+                <svg viewBox="0 0 16 16"><path d="M8.2 5.5a2.2 2.2 0 11-4.4 0 2.2 2.2 0 014.4 0z"/><path d="M2 13c.4-2.4 1.9-3.6 4-3.6s3.6 1.2 4 3.6"/><path d="M13.2 6a1.7 1.7 0 11-3.4 0 1.7 1.7 0 013.4 0z"/><path d="M11 9.6c1.9 0 2.8 1 3.2 2.9"/></svg>
+                <svg viewBox="0 0 16 16"><path d="M2 4.5A1.5 1.5 0 013.5 3h9A1.5 1.5 0 0114 4.5v7a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 11.5z"/><path d="M6 3v10M10 3v10"/></svg>
+              </div>
+            </div>
+            <div class="ui-strip">
+              <div class="ui-tile hot"><span class="hx needs sm"><b>3</b></span>need you</div>
+              <div class="ui-tile"><span class="hx work sm"><b>3</b></span>working</div>
+              <div class="ui-tile"><span class="hx wait sm"><b>3</b></span>waiting</div>
+            </div>
+            <div class="ui-tabs"><span class="ui-tab on">Needs you <span class="hx needs sm"><b>3</b></span></span><span class="ui-tab">Team</span><span class="ui-tab">Tasks <span class="hx sm"><b>7</b></span></span></div>
+            <div class="ui-body">
+              <div class="ui-card hot">
+                <div class="ui-row"><i class="gl needs"></i><div style="min-width:0"><div class="hl">What discount should the checkout apply?</div><div class="ui-meta">Ana · cart · <span class="ui-badge">For you</span> · 5 agents waiting</div></div></div>
+                <div class="ui-meta">Building the cart total. The spec doesn’t say if first orders get a discount.</div>
+                <div class="ui-input">Answer once. Every waiting agent gets it.</div>
+                <span class="ui-btn">Send answer</span>
+              </div>
+              <div class="ui-card">
+                <div class="ui-row"><i class="gl wait"></i><div style="min-width:0"><div class="hl">Assumption: “10% off, no stacking”</div><div class="ui-meta">Ivo · catalog · working on a guess</div></div></div>
+                <div style="display:flex;gap:8px"><span class="ui-btn">Confirm</span><span class="ui-btn ghost">Reject</span></div>
+              </div>
+              <div class="ui-card"><div class="ui-row"><i class="gl needs"></i><div class="hl tr">Which colour for the header?</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- PROBLEM -->
+  <section class="sec alt" id="why">
+    <div class="container">
+      <div class="head"><div class="eyebrow">The problem</div><h2 class="h2">Each agent only knows its own session.</h2><p class="lead">When many people work on the same project, everyone runs their own agent, and none of them can see what the others know. You can write it all down in <code>CLAUDE.md</code>, <code>plan.md</code>, task splits and a <code>journal.md</code> per person, and the same failure still happens.</p></div>
+
+      <ol class="chain row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3 list-unstyled" aria-label="How the failure unfolds">
+        <li class="col"><div class="ci h-100"><span class="n">1</span><h3>Several agents hit the same open question</h3><p>Something only a human can answer, like “what discount should the checkout apply?”</p></div></li>
+        <li class="col"><div class="ci h-100"><span class="n">2</span><h3>Each one asks its own human</h3><p>Every agent stops and waits in its own chat, with no idea the others are stuck on the same thing.</p></div></li>
+        <li class="col"><div class="ci h-100"><span class="n">3</span><h3>The humans copy and paste</h3><p>Questions and answers travel between teammates by hand, in chat windows and messages.</p></div></li>
+        <li class="col"><div class="ci h-100"><span class="n">4</span><h3>Time is lost, and the answers drift</h3><p>Agents still end up acting on conflicting information, because the answer never reached all of them.</p></div></li>
+      </ol>
+
+      <div class="callout">
+        <div class="eyebrow">Why the files don’t fix it</div>
+        <p><b>Markdown files record what <em>already happened</em>.</b> Nothing handles a <em>live, unresolved question</em>: one that is open right now, that several agents are waiting on, and that one person can settle for all of them.</p>
+      </div>
+
+      <h3 class="sub">Here is what that looks like in practice</h3>
+      <div class="row g-4">
+        <div class="col-lg-6"><div class="panel bad h-100">
+          <h3>Without Hacky</h3>
+          <p>Every agent asks you separately, in its own chat.</p>
+          <div class="rows">
+            <div class="ask"><span class="ag">Ana · cart</span><span class="ar">→</span><span class="bub"><i class="gl needs sm-gl" style="--cut:var(--card)"></i><span>What discount should the checkout apply?</span></span></div>
+            <div class="ask"><span class="ag">Ivo · catalog</span><span class="ar">→</span><span class="bub"><i class="gl needs sm-gl"></i><span>What discount should the checkout apply?</span></span></div>
+            <div class="ask"><span class="ag">Dani · checkout-ui</span><span class="ar">→</span><span class="bub"><i class="gl needs sm-gl"></i><span>What discount should the checkout apply?</span></span></div>
+            <div class="ask"><span class="ag">Mira · auth</span><span class="ar">→</span><span class="bub"><i class="gl needs sm-gl"></i><span>What discount should the checkout apply?</span></span></div>
+            <div class="ask"><span class="ag">Ana · payments</span><span class="ar">→</span><span class="bub"><i class="gl needs sm-gl"></i><span>What discount should the checkout apply?</span></span></div>
+          </div>
+          <div class="tally">You answer the same question 5 times.</div>
+        </div></div>
+        <div class="col-lg-6"><div class="panel good h-100">
+          <h3>With Hacky</h3>
+          <p>One question, one answer, delivered to everyone who was waiting.</p>
+          <div class="flow">
+            <div class="agents"><span class="ag">Ana · cart</span><span class="ag">Ivo · catalog</span><span class="ag">Dani · checkout-ui</span><span class="ag">Mira · auth</span><span class="ag">Ana · payments</span></div>
+            <span class="ar">→</span>
+            <div class="qcard">
+              <div class="q"><i class="gl needs"></i><span>What discount should the checkout apply?</span></div>
+              <div class="m">Asked once · 5 agents waiting</div>
+              <div class="a"><i class="gl done"></i><span>10% off the first order, no stacking.</span></div>
+            </div>
+            <span class="ar">→</span>
+            <div class="agents"><span class="know"><i class="gl done sm-gl"></i>knows</span><span class="know"><i class="gl done sm-gl"></i>knows</span><span class="know"><i class="gl done sm-gl"></i>knows</span><span class="know"><i class="gl done sm-gl"></i>knows</span><span class="know"><i class="gl done sm-gl"></i>knows</span></div>
+          </div>
+          <div class="tally">You answer once.</div>
+        </div></div>
+      </div>
+
+      <h3 class="sub">What Hacky replaces</h3>
+      <div class="swap" role="table" aria-label="What Hacky replaces">
+        <div class="r hd" role="row"><span role="columnheader">Today</span><span role="columnheader">With Hacky</span></div>
+        <div class="r" role="row"><span role="cell"><code>plan.md</code> or a README task split</span><span role="cell">A shared task board with owners and status</span></div>
+        <div class="r" role="row"><span role="cell">A <code>journal.md</code> per person</span><span role="cell">An event log the agents write themselves</span></div>
+        <div class="r" role="row"><span role="cell">Copy-pasting questions and answers</span><span role="cell">One question queue that merges duplicates and routes each question to the right person</span></div>
+        <div class="r" role="row"><span role="cell">Old answers lost in chat history</span><span role="cell">A searchable decision log every agent checks before it asks</span></div>
+        <div class="r" role="row"><span role="cell">Sprint plans in a doc or a spreadsheet</span><span role="cell">Sprints with a goal and tasks, and a saved record of what got done when each one closes</span></div>
+        <div class="r" role="row"><span role="cell">“Who is editing that file?” in the team chat</span><span role="cell">A Files view of what each person’s agents edited, and a warning when two tasks overlap</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="sec" id="how">
+    <div class="container">
+      <div class="head"><div class="eyebrow">How it works</div><h2 class="h2">The team answers. The agents keep going.</h2></div>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col"><div class="step h-100"><span class="n">01 · AGENT ASKS</span><h3>A blocked agent raises a question</h3><p>It lands in the team inbox with context, who asked, and how many agents are waiting on it. Duplicates collapse into one card.</p></div></div>
+        <div class="col"><div class="step h-100"><span class="n">02 · YOU ANSWER</span><h3>One person answers, once</h3><p>The question carries a “For you” badge and a count on the activity bar. Type the answer in the sidebar and send.</p></div></div>
+        <div class="col"><div class="step h-100"><span class="n">03 · EVERYONE KNOWS</span><h3>The answer reaches every agent</h3><p>While it waits, an agent proceeds on a stated assumption you can confirm or reject. Settled answers become decisions the whole team can see.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="sec alt" id="features">
+    <div class="container">
+      <div class="head"><div class="eyebrow">What’s inside</div><h2 class="h2">Built for a glance, never in the way.</h2><p class="lead">Everything uses your VS Code theme, so Hacky looks like it belongs in your editor.</p></div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3">
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 9.5l1.7-5.3h7.6l1.7 5.3v3h-11z"/><path d="M2.5 9.5h3.2l.8 1.5h3l.8-1.5h3.2"/></svg></div><h3>Needs you, first</h3><p>Open questions rise to the top with a badge, a status strip and an activity-bar count. Nothing waiting? “No open questions. All clear.”</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg></div><h3>Assumptions, not stalls</h3><p>Agents keep working on a stated guess while they wait. Confirm it, or reject it with a reason the agent will read.</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5"/><path d="M5.5 7V5.2a2.5 2.5 0 015 0V7"/></svg></div><h3>Decisions that stick</h3><p>“We use Postgres, not Mongo.” Settled answers become team decisions. Change or withdraw one and every agent is notified.</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M6 3v10M10 3v10"/></svg></div><h3>A shared task board</h3><p>To do, In progress, Done, with an owner and files on every task. Label tasks art, code, design or audio, add one in a line, and filter by person. Agents claim a task so two never do the same one.</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="6" cy="5.5" r="2.2"/><path d="M2 13c.4-2.4 1.9-3.6 4-3.6s3.6 1.2 4 3.6"/><circle cx="11.5" cy="6" r="1.7"/><path d="M11 9.6c1.9 0 2.8 1 3.2 2.9"/></svg></div><h3>Team pulse and live feed</h3><p>See each teammate’s chats, what each is doing right now and recent progress, plus a digest of what got done. A chat leaves hand-off notes, so the next one picks up its work.</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4.5h11v6h-5l-3 2.5v-2.5h-3z"/></svg></div><h3>Agents ask agents</h3><p>Agent-to-agent questions are answered between agents. When one is addressed to you, you can answer it. Answered threads stay read-only.</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8l5 2v3.6c0 3-2.1 5.2-5 6.8-2.9-1.6-5-3.8-5-6.8V3.8z"/><path d="M6 8l1.6 1.6L10.4 6.8"/></svg></div><h3>Groups and roles</h3><p>Keep several groups, each with leads and members. Only a lead renames or deletes the group, manages people or makes a new invite code. Anyone can leave.</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 4.5L2.5 8l3 3.5M10.5 4.5l3 3.5-3 3.5M9 3.5l-2 9"/></svg></div><h3>One MCP server</h3><p>Agents talk to Hacky through <code>hacky-mcp-server</code>, which the extension sets up for you. Secrets are filtered out before anything is shared.</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 11.5a5.5 5.5 0 119 0"/><path d="M8 11.5L11 6"/><circle cx="8" cy="11.5" r="1"/></svg></div><h3>Sprints</h3><p>Plan a sprint with a name, goal and dates, drop tasks in from the backlog, start it and close it. Closing saves what got done, and unfinished tasks go back to the backlog or into the next sprint.</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2.5h7l3 3v8H3z"/><path d="M10 2.5v3h3M5.5 8h5M5.5 10.5h5"/></svg></div><h3>One project overview</h3><p>The idea and the architecture in one place, with a list of bugs and ideas. People edit the overview. Agents can read it and file bugs and ideas, but can’t change it.</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="4.5" cy="4" r="1.6"/><circle cx="4.5" cy="12" r="1.6"/><circle cx="11.5" cy="6.5" r="1.6"/><path d="M4.5 5.6v4.8M4.5 8c0-1.5 1.5-1.5 4-1.5h1.4"/></svg></div><h3>GitHub and a Git graph</h3><p>Link your repository, see branches and commits as a read-only graph, and get a warning when a teammate’s folder is a different project. It compares git history, so it works without linking.</p></article></div>
+        <div class="col"><article class="feat h-100"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8l1.7 3.5 3.8.5-2.8 2.7.7 3.8L8 10.4l-3.4 1.9.7-3.8L2.5 5.8l3.8-.5z"/></svg></div><h3>Shared skills</h3><p>Share an agent skill from GitHub with the whole team, pinned to one exact commit. Teammates read it first, then install it. Nothing in a skill is ever run.</p></article></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <section class="sec" id="map">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 txt">
+          <div class="eyebrow">Hacky Map</div>
+          <h2 class="h2">See your whole team as a live graph.</h2>
+          <p class="lead">People, chats and open questions in one animated view. Zoom in, watch the links flow, and scrub the work timeline. Open it from the sidebar or the Board in one click.</p>
+          <div class="cta"><a class="btn btn-ghost" href="#tour">Take the tour</a></div>
+        </div>
+        <div class="col-lg-6"><div class="mapbox">
+          <svg class="mini" viewBox="0 0 300 104" role="img" aria-label="Map preview: 4 people, 8 chats, 1 open question">
+            <g class="lk">
+              <path d="M46 56L120 30L198 68L262 38M46 56L198 68"/>
+              <path d="M46 56L24 24M46 56L22 86M120 30L96 12M120 30L152 12M198 68L214 94M198 68L238 92M262 38L282 62M262 38L280 14"/>
+              <path class="q" d="M150 90L198 68M150 90L46 56"/>
+            </g>
+            <polygon class="p" points="46,44 56.4,50 56.4,62 46,68 35.6,62 35.6,50"/><text x="46" y="59">DN</text>
+            <polygon class="p" points="120,18 130.4,24 130.4,36 120,42 109.6,36 109.6,24"/><text x="120" y="33">MP</text>
+            <polygon class="p" points="198,56 208.4,62 208.4,74 198,80 187.6,74 187.6,62"/><text x="198" y="71">AS</text>
+            <polygon class="p" points="262,26 272.4,32 272.4,44 262,50 251.6,44 251.6,32"/><text x="262" y="41">ID</text>
+            <circle class="n-work" cx="24" cy="24" r="4.5"/><circle class="n-wait" cx="22" cy="86" r="4.5"/>
+            <circle class="n-work" cx="96" cy="12" r="4.5"/><circle class="n-done" cx="152" cy="12" r="4.5"/>
+            <circle class="n-wait" cx="214" cy="94" r="4.5"/><circle class="n-work" cx="238" cy="92" r="4.5"/>
+            <circle class="n-wait" cx="282" cy="62" r="4.5"/><circle class="n-idle" cx="280" cy="14" r="4.5"/>
+            <circle class="n-q" cx="150" cy="90" r="8"/><text class="n-q-t" x="150" y="93.2">?</text>
+          </svg>
+          <div class="legend"><span><i style="background:var(--needs)"></i>Needs you</span><span><i style="background:var(--wait)"></i>Waiting</span><span><i style="background:var(--work)"></i>Working</span><span><i style="background:var(--done)"></i>Done</span></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOUR -->
+  <section class="sec alt" id="tour">
+    <div class="container">
+      <div class="head"><div class="eyebrow">The Board</div><h2 class="h2">When you need the full picture, open the Board.</h2></div>
+      <div class="tabs" role="group" aria-label="Board tabs">
+        <button class="tab on" type="button" data-tab="messages" aria-pressed="true">Messages</button>
+        <button class="tab" type="button" data-tab="tasks" aria-pressed="false">Tasks</button>
+        <button class="tab" type="button" data-tab="sprints" aria-pressed="false">Sprints</button>
+        <button class="tab" type="button" data-tab="team" aria-pressed="false">Team</button>
+        <button class="tab" type="button" data-tab="project" aria-pressed="false">Project</button>
+        <button class="tab" type="button" data-tab="files" aria-pressed="false">Files</button>
+        <button class="tab" type="button" data-tab="activity" aria-pressed="false">Activity</button>
+      </div>
+      <p class="cap" id="cap" aria-live="polite">What needs you comes first. Questions, assumptions and agent chats, with a Mine or Everything filter, and the decision log alongside.</p>
+      <div class="win">
+        <div class="win-bar"><i></i><i></i><i></i><span>Hacky Board</span></div>
+        <div class="ui ui-scroll">
+          <!-- Messages -->
+          <div class="pane" id="pane-messages">
+            <div class="ui-bar"><h4>Messages</h4><span class="ui-meta">3 questions wait on you · 1 assumption to review</span><span class="sp"></span><span class="ui-pills"><span class="ui-pill on">Mine</span><span class="ui-pill">Everything</span></span></div>
+            <div class="ui-pad">
+              <div class="ui-card hot">
+                <div class="ui-row"><i class="gl needs"></i><div><div class="hl">What discount should the checkout apply?</div><div class="ui-meta">Ana · cart · <span class="ui-badge">For you</span> · 5 agents waiting</div></div></div>
+                <div class="ui-input">Answer once. Every waiting agent gets it.</div>
+                <span class="ui-btn">Send answer</span>
+              </div>
+              <div class="ui-card"><div class="ui-row"><i class="gl wait"></i><div><div class="hl">Assumption: “10% off, no stacking”</div><div class="ui-meta">Ivo · catalog · waiting for you to confirm or reject</div></div></div></div>
+              <div class="ui-card"><div class="ui-row"><i class="gl done"></i><div><div class="hl">Decision: “We use Postgres, not Mongo.”</div><div class="ui-meta">Decided by Mira · change or withdraw it and every agent is told</div></div></div></div>
+            </div>
+          </div>
+          <!-- Tasks -->
+          <div class="pane" id="pane-tasks">
+            <div class="ui-bar"><h4>Tasks</h4><span class="sp"></span><span class="ui-pills"><span class="ui-pill on">Everyone 7</span><span class="ui-pill">Ana 2</span><span class="ui-pill">Ivo 2</span><span class="ui-pill">Dani 2</span><span class="ui-pill">Mira 1</span></span></div>
+            <div class="ui-kan">
+              <div class="ui-col"><h5><i class="gl idle"></i>To do<span class="n">2</span></h5>
+                <div class="ui-task"><span class="hl">Add a coupon field</span><span class="who">Unclaimed</span></div>
+                <div class="ui-task"><span class="hl">Empty-cart state</span><span class="ui-file">src/cart/Empty.tsx</span><span class="who"><span class="ui-avatar c">D</span>Dani</span></div></div>
+              <div class="ui-col"><h5><i class="gl work"></i>In progress<span class="n">3</span></h5>
+                <div class="ui-task"><span class="hl">Checkout total with discount</span><span class="ui-file">src/cart/total.ts</span><span class="who"><span class="ui-avatar">A</span>Ana</span></div>
+                <div class="ui-task"><span class="hl">Catalog search</span><span class="who"><span class="ui-avatar b">I</span>Ivo</span></div>
+                <div class="ui-task"><span class="hl">Login form</span><span class="who"><span class="ui-avatar d">M</span>Mira</span></div></div>
+              <div class="ui-col"><h5><i class="gl done"></i>Done<span class="n">2</span></h5>
+                <div class="ui-task"><span class="hl">Product page layout</span><span class="who"><span class="ui-avatar b">I</span>Ivo</span></div>
+                <div class="ui-task"><span class="hl">Set up payments sandbox</span><span class="who"><span class="ui-avatar">A</span>Ana</span></div></div>
+            </div>
+          </div>
+          <!-- Sprints -->
+          <div class="pane" id="pane-sprints">
+            <div class="ui-bar"><h4>Sprints</h4><span class="ui-meta">Plan, start, close. Closing keeps a record.</span></div>
+            <div class="ui-pad">
+              <div class="ui-card hot">
+                <div class="ui-row"><i class="gl work"></i><div><div class="hl">Sprint 2 · Checkout <span class="ui-badge">Active</span></div><div class="ui-meta">Goal: customers can pay, with the discount applied · 11 to 15 Nov</div></div></div>
+                <div class="ui-prog" role="img" aria-label="3 of 5 tasks done"><span style="width:60%"></span></div>
+                <div class="ui-meta">3 of 5 tasks done · Ana 2, Ivo 1, Dani 1, Mira 1</div>
+                <span class="ui-btn ghost">Close sprint</span>
+              </div>
+              <div class="ui-card"><div class="ui-row"><i class="gl idle"></i><div><div class="hl">Sprint 3 · Polish <span class="ui-badge plan">Planned</span></div><div class="ui-meta">2 tasks · Start it when Sprint 2 is closed</div></div></div></div>
+              <div class="ui-card"><div class="ui-row"><i class="gl done"></i><div><div class="hl">Sprint 1 · Foundations</div><div class="ui-meta">Closed · 6 tasks done, 1 carried over to Sprint 2 · the progress agents logged is kept</div></div></div></div>
+            </div>
+          </div>
+          <!-- Team -->
+          <div class="pane" id="pane-team">
+            <div class="ui-bar"><h4>Team</h4><span class="ui-meta">4 people · 8 chats · live</span></div>
+            <div class="ui-pad">
+              <div class="ui-person"><span class="ui-avatar">A</span><div class="ch"><b>Ana</b><span class="ui-meta">2 chats active</span><span class="ui-meta">Now: checkout total with discount</span><span class="ui-meta">Done: Set up payments sandbox</span></div></div>
+              <div class="ui-person"><span class="ui-avatar b">I</span><div class="ch"><b>Ivo</b><span class="ui-meta">3 chats active</span><span class="ui-meta">Now: catalog search</span></div></div>
+              <div class="ui-person"><span class="ui-avatar c">D</span><div class="ch"><b>Dani (you)</b><span class="ui-meta">1 chat active</span><span class="ui-meta">Now: empty-cart state</span></div></div>
+              <div class="ui-person"><span class="ui-avatar d">M</span><div class="ch"><b>Mira</b><span class="ui-meta">2 chats active</span><span class="ui-meta">Now: login form</span></div></div>
+            </div>
+          </div>
+          <!-- Project -->
+          <div class="pane" id="pane-project">
+            <div class="ui-bar"><h4>Project</h4><span class="ui-meta">Linked to acme/hacky-shop</span></div>
+            <div class="ui-pad">
+              <div class="ui-card">
+                <div class="ui-row"><i class="gl done"></i><div><div class="hl">Same project?</div><div class="ui-meta">Everyone who opened Hacky is in the same project.</div></div></div>
+                <div class="ui-meta">Ana · same project &nbsp;·&nbsp; Ivo · same project &nbsp;·&nbsp; Dani (you) · same project &nbsp;·&nbsp; Mira · same project</div>
+              </div>
+              <div class="ui-card">
+                <div class="hl">Overview</div>
+                <div class="ui-meta"><b>Idea:</b> A small shop where customers build a cart and pay with a first-order discount.</div>
+                <div class="ui-meta"><b>Architecture:</b> React front end, Postgres, one payments provider.</div>
+              </div>
+              <div class="ui-card"><div class="ui-row"><i class="gl needs"></i><div><div class="hl">Bug: empty cart still shows a total</div><div class="ui-meta">High · filed by Ivo’s agent</div></div></div></div>
+              <div class="ui-card"><div class="ui-row"><i class="gl idle"></i><div><div class="hl">Idea: save the cart for later</div><div class="ui-meta">Open · filed by Dani</div></div></div></div>
+            </div>
+          </div>
+          <!-- Files -->
+          <div class="pane" id="pane-files">
+            <div class="ui-bar"><h4>Files</h4><span class="ui-meta">Edited by agents in the last week</span><span class="sp"></span><span class="ui-pills"><span class="ui-pill on">Everyone</span><span class="ui-pill">Ana</span><span class="ui-pill">Ivo</span><span class="ui-pill">Dani</span><span class="ui-pill">Mira</span></span></div>
+            <div class="ui-pad">
+              <div class="ui-ft">
+                <div class="ui-fr"><span class="fn">src/</span><span class="sp"></span><span class="ui-avatar">A</span><span class="ui-avatar b">I</span><span class="ui-avatar c">D</span><span class="ui-avatar d">M</span><span class="ui-meta">2 min ago</span></div>
+                <div class="ui-fr d1"><span class="fn">cart/</span><span class="sp"></span><span class="ui-avatar">A</span><span class="ui-avatar c">D</span><span class="ui-meta">2 min ago</span></div>
+                <div class="ui-fr d2"><span class="fn">total.ts</span><span class="sp"></span><span class="ui-avatar">A</span><span class="ui-meta">2 min ago</span></div>
+                <div class="ui-fr d2"><span class="fn">Empty.tsx</span><span class="sp"></span><span class="ui-avatar c">D</span><span class="ui-meta">14 min ago</span></div>
+                <div class="ui-fr d1"><span class="fn">catalog/</span><span class="sp"></span><span class="ui-avatar b">I</span><span class="ui-meta">9 min ago</span></div>
+                <div class="ui-fr d1"><span class="fn">auth/</span><span class="sp"></span><span class="ui-avatar d">M</span><span class="ui-meta">31 min ago</span></div>
+              </div>
+              <div class="ui-meta">What agents reported. Hacky never sees anyone’s real folder.</div>
+            </div>
+          </div>
+          <!-- Activity -->
+          <div class="pane" id="pane-activity">
+            <div class="ui-bar"><h4>Activity</h4><span class="ui-meta">What everyone’s agents did</span></div>
+            <div class="ui-pad">
+              <div class="ui-ev"><span class="tm">10:42</span><i class="gl work"></i><span><b>Ana</b> started the discount in the cart total</span></div>
+              <div class="ui-ev"><span class="tm">10:38</span><i class="gl needs"></i><span><b>Ana</b> asked: What discount should the checkout apply?</span></div>
+              <div class="ui-ev"><span class="tm">10:31</span><i class="gl done"></i><span><b>Mira</b> decided: We use Postgres, not Mongo.</span></div>
+              <div class="ui-ev"><span class="tm">10:20</span><i class="gl done"></i><span><b>Ivo</b> finished the product page layout</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENTS -->
+  <section class="sec" id="agents">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 txt">
+          <div class="eyebrow">Agents · Windows app</div>
+          <h2 class="h2">Run your agents right next to the team.</h2>
+          <p class="lead">The Terminal tab opens real Claude Code, Codex or Gemini CLI sessions inside your connected folders, and installs an agent for you if it is missing. For Claude Code there is also a Chat view that turns what the agent asks into cards you can answer.</p>
+          <ul class="buddy-points list-unstyled">
+            <li><b>Questions and plans as cards.</b> Answer a question, or approve or reject a plan with a reason. Your reply goes straight back to the agent.</li>
+            <li><b>You choose how much it may do alone.</b> Ask every time, allow edits, plan first, or <i>Auto: ask only for plans</i>, where edits and commands run and only questions and plans still stop for you.</li>
+            <li><b>Model and plan usage.</b> Pick the model per chat and watch your 5-hour and weekly allowance fill up.</li>
+            <li><b>You don’t have to watch it.</b> A toast and a taskbar flash tell you when a chat needs approval or a step is done. Past chats are saved, and “Open in Claude Code” continues one in a terminal.</li>
+          </ul>
+          <p class="note">Chat is for Claude Code. Codex and Gemini CLI open in the Terminal.</p>
+        </div>
+        <div class="col-lg-6">
+          <div class="win">
+            <div class="win-bar"><i></i><i></i><i></i><span>Hacky · Terminal</span></div>
+            <div class="ui" role="img" aria-label="A Hacky chat with Claude Code showing a plan waiting for approval and a usage meter">
+              <div class="ui-hd">
+                <div class="t"><b>Claude Code · hacky-shop</b><small>Chat: Auto, ask only for plans</small></div>
+                <div class="ui-usage"><span><i>5h</i><u><s style="width:42%"></s></u>42%</span><span><i>Week</i><u><s style="width:18%"></s></u>18%</span></div>
+              </div>
+              <div class="ui-body">
+                <div class="ui-chat me">Add the first-order discount to the cart total.</div>
+                <div class="ui-card hot">
+                  <div class="ui-row"><i class="gl needs"></i><div><div class="hl">Plan waiting for you <span class="ui-badge">Plan</span></div><div class="ui-meta">1. Read the team decision on discounts. 2. Add a discount rule to <code>total.ts</code>. 3. Cover it with two tests.</div></div></div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="ui-btn">Approve plan</span><span class="ui-btn ghost">Reject with a reason</span></div>
+                </div>
+                <div class="ui-meta">Edits and commands run without asking in this mode. Only questions and plans stop for you.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUDDY -->
+  <section class="sec alt" id="buddy">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 order-lg-2 txt">
+          <div class="eyebrow">Hacky Buddy · Windows app</div>
+          <h2 class="h2">Meet the little helper that lives in your app.</h2>
+          <p class="lead">A small robot walks around the Hacky window and talks in short messages. Click it to ask for help, drag it out of the way. It can see your board, so you can ask “what should I do next?”, “add three tasks for the login page” or “help me fix the project description”.</p>
+          <ul class="buddy-points list-unstyled">
+            <li><b>Knows your board.</b> It sees tasks, bugs, ideas, sprints, teammates and your open chats. It can add, change or close them, even several tasks in one reply, and every change has an Undo.</li>
+            <li><b>Asks before the big things.</b> Starting or closing a sprint waits for your Confirm. It drafts the project overview in the boxes, and nothing reaches your team until you press Save.</li>
+            <li><b>Keeps you up to date.</b> It tells you what happened while you were away and when something changes, can plan your next steps, and can pass an instruction on to one of your chats. The Buddy tab keeps the whole conversation.</li>
+            <li><b>Made from your profile.</b> Its colour and name come from you. Right-click it to rename it, recolour it or hide it. Be rude and it gets sad. Praise it and it blushes.</li>
+            <li><b>Thinks with your own Claude.</b> It uses the Claude Code you already signed in to, with no tools, so it can’t run commands or read your files.</li>
+          </ul>
+          <div class="cta"><a class="btn btn-brand" href="#download">Get the Windows app</a></div>
+          <p class="note">Needs Claude Code installed. A first-run tour shows you around.</p>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+          <div class="buddybox" role="img" aria-label="The Hacky buddy, a small green robot, saying: Want me to rewrite your project description?">
+            <div class="cloud">
+              <span class="say s1">Hi, I’m Bolt! Click me any time to ask for help.</span>
+              <span class="say s2">Want me to rewrite your project description?</span>
+              <span class="say s3">Done! I filled in a draft. Read it, then press Save.</span>
+              <i class="puff p1"></i><i class="puff p2"></i>
+            </div>
+            <svg class="bot" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <g class="rig">
+                <line x1="32" y1="6" x2="32" y2="14" stroke="#8a96a3" stroke-width="2.5" stroke-linecap="round"/>
+                <circle class="light" cx="32" cy="5" r="3.5"/>
+                <rect x="11" y="52" width="14" height="7" rx="3.5" class="b-dark"/><rect x="39" y="52" width="14" height="7" rx="3.5" class="b-dark"/>
+                <circle cx="7" cy="36" r="5" class="b-dark"/><circle cx="57" cy="36" r="5" class="b-dark"/>
+                <rect x="8" y="13" width="48" height="41" rx="18" class="b-main"/>
+                <path d="M14 22c4-5 12-7 18-7s14 2 18 7" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+                <rect x="14" y="22" width="36" height="22" rx="10" fill="#14202b"/>
+                <ellipse class="eye" cx="24" cy="31" rx="3.5" ry="4.5"/><ellipse class="eye" cx="40" cy="31" rx="3.5" ry="4.5"/>
+                <path d="M27 38q5 3.5 10 0" fill="none" stroke="#9ff3ff" stroke-width="2" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SETUP -->
+  <section class="sec" id="install">
+    <div class="container">
+      <div class="head"><div class="eyebrow">Get started</div><h2 class="h2">Three steps, then your agents share a brain.</h2></div>
+      <div class="row row-cols-1 row-cols-md-3 g-3">
+        <div class="col"><div class="sc h-100"><span class="eyebrow">01</span><h3>Install the extension</h3><p>Run <code>npx -y hacky-vscode</code> (add <code>--editor=cursor</code> for Cursor), then quit and reopen the editor. Open the Hacky sidebar and sign up with your email. Update later with <code>npx -y hacky-vscode@latest</code>. Not using VS Code? <a href="#download" style="text-decoration:underline">Get the Windows app</a>.</p><div class="mock"><small>Hacky for VS Code</small></div></div></div>
+        <div class="col"><div class="sc h-100"><span class="eyebrow">02</span><h3>Create or join a team</h3><p>Start a team, or join your teammates with their invite code. You can be in several groups.</p><div class="mock">NP-7K4Q<small>invite code</small></div></div></div>
+        <div class="col"><div class="sc h-100"><span class="eyebrow">03</span><h3>Connect your folder</h3><p>Click “Connect this folder” so your agent can see the team’s answers, then start a new Claude Code chat. “Update setup” re-syncs it later.</p><div class="mock"><i class="gl done"></i><small>Connected · hacky-shop</small></div></div></div>
+      </div>
+      <p class="more">Needs VS Code 1.100 or newer with the <code>code</code> command on your PATH (Command Palette: “Shell Command: Install 'code' command in PATH”), Node and npm on each teammate’s machine, and a Supabase project for the team’s shared data.</p>
+    </div>
+  </section>
+
+  <!-- WINDOWS APP -->
+  <section class="sec alt" id="download">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5 dl-txt">
+          <div class="eyebrow">Hacky for Windows</div>
+          <h2 class="h2">Not working in VS Code?</h2>
+          <p class="lead">The Windows app shows the same sidebar, Board and Map in its own window, so it works next to any tool you build in: Unity, Blender, Cursor or anything else. It adds <a href="#agents" style="text-decoration:underline">Terminal and Chat</a> for your agents and Skills and Git tabs, sits in the tray, tells you when a question needs you, has a little <a href="#buddy" style="text-decoration:underline">buddy</a> that helps you around, and updates itself.</p>
+          <div class="cta">
+            <a class="btn btn-brand" id="dl-btn" href="https://github.com/Puhita/Hacky-releases/releases"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v7.5M4.8 7.2L8 10.4l3.2-3.2M3 13h10"/></svg>Download for Windows</a>
+            <a class="btn btn-ghost" id="dl-apk" href="https://github.com/Puhita/Hacky-releases/releases"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v7.5M4.8 7.2L8 10.4l3.2-3.2M3 13h10"/></svg>Android app (APK)</a>
+          </div>
+          <p class="note" id="dl-note">Windows 10 and 11, 64-bit.</p>
+          <p class="note" id="dl-apk-note">Hacky remote for Android: see your chats, answer your agents and send messages from your phone. Or <a href="remote.html" style="text-decoration:underline">open it in the browser</a>. Turn on “Let me control chats from my phone” in the Windows app first. Android 6 or newer. The APK isn’t from the Play Store, so Android asks you to allow installing it.</p>
+        </div>
+        <div class="col-lg-7">
+          <ol class="dl-steps list-unstyled">
+            <li><span class="n">1</span><div><h3>Download and run the installer</h3><p>Open the <code>Hacky-Setup</code> file you downloaded. It installs for your user only, no admin needed.</p></div></li>
+            <li><span class="n">2</span><div><h3>Get past SmartScreen</h3><p>The app isn’t code-signed yet, so Windows says “Windows protected your PC”. Click <b>More info</b>, then <b>Run anyway</b>.</p></div></li>
+            <li><span class="n">3</span><div><h3>Log in and pick your team</h3><p>Use the same account as the extension, or sign up. The app and the extension share one login, so you can use both. Then create a team or join one with an invite code.</p></div></li>
+            <li><span class="n">4</span><div><h3>Choose your project folder</h3><p>Click <b>Choose folder</b> and pick your project, tick the tools you use (Claude Code, Cursor or Codex), then <b>Connect this folder</b>. New chats in that folder join the team. You can add several folders.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final sec">
+    <div class="container"><div class="in">
+      <div class="eyebrow">Ready when your team is</div>
+      <h2 class="h2">Stop answering the same question five times.</h2>
+      <div class="cta" style="justify-content:center"><a class="btn btn-brand" href="#install">Set up Hacky</a></div>
+    </div></div>
+  </section>
+</main>
+
+<footer class="foot"><div class="container">
+  <div class="d-flex flex-wrap align-items-center gap-3 gap-md-4">
+    <span class="brand"><img src="assets/logo.svg" alt="" width="24" height="24">Hacky</span>
+    <span>A shared brain for teams with AI coding agents.</span><span class="sp"></span>
+    <a href="#how">How it works</a><a href="#features">Features</a><a href="#install">Set up</a><a href="#download">Download</a>
+  </div>
+  <div class="foot-legal">
+    <span>© 2026 Hacky contributors. All rights reserved.</span>
+    <span class="sp"></span>
+    <a href="terms.html">Terms</a><a href="cookies.html">Cookies and privacy</a><button type="button" class="linklike" data-cookie-settings>Cookie settings</button>
+  </div>
+</div></footer>
+
+<script src="vendor/bootstrap.bundle.min.js"></script>
+<script src="consent.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
